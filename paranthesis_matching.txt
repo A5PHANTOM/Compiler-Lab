@@ -1,0 +1,48 @@
+Program(lex only)
+%{
+#include<stdio.h>
+int l=0,r=0,cbl=0,cbr=0;
+void check(void);
+%}
+%%
+"("  {++l;}
+")"  {++r; }
+"{"  {++cbl; }
+"}"  {++cbr; }
+[a-zA-Z0-9]+
+[\t]+
+\n { check();
+ return 0; }
+.   {}
+%%
+int main(void)
+{
+       printf("Enter the Expression: ");
+       yylex();
+       return 0;
+}
+int yywrap(void)
+{
+       return 1;
+}
+void check(void)
+{
+       if(l==r)
+               printf("Parenthesis are balanced\n");
+       else if(l>r)
+               printf("Right parenthesis is missing\n");
+       else
+                printf("Left parenthesis is missing\n");
+ 
+       if(cbl==cbr)
+               printf("Braces are balanced\n");
+       else if(cbl>cbr)
+               printf("Brace right '}' is missing\n");
+       else
+               printf("Brace left '{' is missing\n");
+}
+ 
+Output
+Enter the Expression: {{(a+b)+(C+d}
+Right parenthesis is missing
+Brace right '}' is missing

@@ -1,0 +1,67 @@
+Program 10
+YACC Part:
+%{
+#include <stdio.h>
+#include <stdlib.h>
+%}
+%token NUMBER ID
+%left '+' '
+'
+-
+%left '*' '/'
+%%
+E : T {
+printf("Result = %d\n"
+, $1);
+return 0;
+}
+;
+T : T '+' T { $$ = $1 + $3; }
+| T '
+-
+' T { $$ = $1 - $3; }
+| T '*' T { $$ = $1 * $3; }
+| T '/' T { $$ = $1 / $3; }
+| '
+-
+' NUMBER { $$ = -$2; }
+| '
+-
+' ID { $$ = -$2; }
+| '(' T ')' { $$ = $2; }
+| NUMBER { $$ = $1; }
+| ID { $$ = $1; }
+;
+%%
+int main() {
+printf("Enter the expression:\n");
+yyparse();
+return 0;
+}
+int yyerror(char* s) {
+printf("\nExpression is invalid\n");
+return 0;
+}
+
+
+LEX Part:
+
+
+%{
+#include "y.tab.h" // Must be included first — defines NUMBER, ID
+#include <stdlib.h> // Needed for atoi()
+extern int yylval; // Declares yylval for the lexer
+%}
+%%
+[0-9]+ { yylval = atoi(yytext); return NUMBER; }
+[a-zA-Z]+ { yylval = 1; return ID; }
+[ \t\n] ; // Ignore whitespace
+. { return yytext[0]; }
+%%
+int yywrap() {
+return 1;
+}
+OUTPUT:
+Enter the expression:
+2+3
+Result = 5

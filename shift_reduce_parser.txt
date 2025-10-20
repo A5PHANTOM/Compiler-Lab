@@ -1,0 +1,127 @@
+Program (C)
+
+#include <stdio.h>
+#include <string.h>
+charip[20
+]
+,stack[20
+;
+]
+int i,j, k,n;
+void check();
+int main() {
+printf("Enter the input string (end with $):\n");
+scanf("%s",ip);
+printf("\nStack\t\tInput\t\tAction\n");
+printf("--------------------------------------\n");
+i =0; j= 0;
+while (ip[i
+]
+!= '\0') {
+stack[j
+]
+= ip[i
+;
+]
+stack[j+ 1
+]
+= '\0';
+ip[i
+]
+= ' ';
+printf("%s\t\t%s\t\tShift\n",stack,ip);
+check();
+i++; j++;
+}
+if(strcmp(stack, "E")== 0)
+printf("%s\t\t%s\t\tAccept\n",stack,ip);
+else
+printf("%s\t\t%s\t\tReject\n", stack, ip);
+return 0;
+}
+void check() {
+for(k =0;k < j; k++){
+if(stack[k
+]
+=='i' && stack[k + 1
+]
+=='d'){
+stack[k
+]
+='E';
+stack[k + 1
+]
+='\0';
+j= k + 1;
+printf("%s\t\t%s\t\tReduce E->id\n",stack,ip);
+}}
+for(k =0;k < j; k++){
+if(stack[k
+]
+=='E' && stack[k + 1
+]
+== '+' && stack[k + 2
+]
+== 'E') {
+stack[k
+]
+='E';
+stack[k + 1
+]
+='\0';
+stack[k + 2
+]
+='\0';
+j= k + 1;
+printf("%s\t\t%s\t\tReduce E->E+E\n",stack,ip);
+}}
+for(k =0;k < j; k++){
+if(stack[k
+]
+=='E' && stack[k + 1
+]
+== '*' && stack[k+ 2
+]
+== 'E'){
+stack[k
+]
+='E';
+stack[k + 1
+]
+='\0';
+stack[k + 2
+]
+='\0';
+j= k + 1;
+printf("%s\t\t%s\t\tReduce E->E*E\n",stack,ip);
+}}
+for(k =0;k < j; k++){
+if(stack[k
+]
+=='(' && stack[k + 1
+]
+=='E' && stack[k + 2
+]
+==')'){
+stack[k
+]
+='E';
+stack[k + 1
+]
+='\0';
+stack[k + 2
+]
+='\0';
+j= k + 1;
+printf("%s\t\t%s\t\tReduce E->(E)\n",stack,ip);
+}}}
+OUTPUT:
+Enterthe input string (end with$):aabb$
+Stack Input Action
+--------------------------------------
+a abb$ Shift
+aa bb$ Shift
+aab b$ Shift
+aabb $ Shift
+aabb$ Shift
+aabb$ Reject
